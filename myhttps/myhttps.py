@@ -170,7 +170,7 @@ def deal404():
     try:
         f=open(STATUS+"404.html","r")
     except:
-        print STATUS+"404.html"
+        #print STATUS+"404.html"
         if os.path.exists(STATUS+"404.html"):
             return deal403()
         else:
@@ -512,7 +512,7 @@ class Thread(threading.Thread):
         while True:
             filenoo,eventt=self._queue.get()
 
-            if eventt & select.EPOLLIN:
+            if eventt & select.EPOLLPRI:
                 #while True:
                 try:
                     aa = ""
@@ -538,7 +538,7 @@ class Thread(threading.Thread):
                         except:
                             pass
 
-            elif eventt & select.EPOLLOUT:
+            elif eventt & select.EPOLLMSG:
                 #while True:
                 try:
                     byteswritten[filenoo] = connections[filenoo].send(httprespones[filenoo])
@@ -603,9 +603,11 @@ if __name__=="__main__":
                     httprespones[connection.fileno()] = b''
                     
                 elif event & select.EPOLLIN:
-                    queue.put((fileno,select.EPOLLIN))
+                    epoll.modify(fileno,select.EPOLLPRI)
+                    queue.put((fileno,select.EPOLLPRI))
                 elif event & select.EPOLLOUT:
-                    queue.put((fileno,select.EPOLLOUT))
+                    epoll.modify(fileno,select.EPOLLMSG)
+                    queue.put((fileno,select.EPOLLMSG))
                 elif event & select.EPOLLHUP:
                     #print 'd'
                     epoll.unregister(fileno)
