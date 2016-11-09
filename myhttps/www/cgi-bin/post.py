@@ -9,6 +9,5 @@ form = cgi.FieldStorage()
 #print "Content-Type: text/html"     # HTML is following
 #print                               # blank line, end of headers
 #print "<p>Hello world!</p>"         # Start of content
-#print "<p>" +  repr(form['firstname']) + "</p>"
-print form['a']
-
+print "<p>" +  form['a'].value + "</p>"
+#print form['a']
