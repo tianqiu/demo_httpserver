@@ -8,33 +8,13 @@ HTTPLISTEN = 8080
 cwd = os.getcwd()+"/www"
 
 
-def dealcgi(path,cgican):
-    try:
-        print "cmd = " + "python "+cwd+path+" "+cgican
-        ff = os.popen("python "+cwd+path+" "+cgican).read()
-        print ff
-    except:
-        ff = "none"
-    return ff
+
 
 
 def dealresponse(request):
     method=request.split(' ')[0]
     url=request.split(' ')[1]
     path=url.split('?')[0]
-    print method,url,path 
-    can = ""
-    cgican = " "
-    try:
-        can = url.split("?")[1]
-        cgican = can.replace("&","\&")
-        print "\ncgican  =  "+cgican
-    except:
-        pass
-    
-    type = path.split('.')[-1]
-    if type == "py":
-        return dealcgi(path,cgican)
 
     head="HTTP/1.1 200 OK\r\n"
     head+="Date:"+time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) +"\r\n"
