@@ -58,13 +58,14 @@ serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 serversocket.bind((HTTPIP, HTTPLISTEN))
 serversocket.listen(5)
 
-while True:
-    try:
+try:
+    while True:
         connection,address = serversocket.accept()
         httprequest = connection.recv(1024)
         print httprequest + "\n------------------------------------------------------\n"
         httpresponse = dealresponse(httprequest)
         connection.send(httpresponse)
         connection.close()
-    except:
-        serversocket.close()
+except:
+    serversocket.close()
+
